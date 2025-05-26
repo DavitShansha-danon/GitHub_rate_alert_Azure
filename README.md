@@ -70,4 +70,4 @@ Follow these steps in order:
 
 ---
 
-Ready? Start with [GitHub App Setup](./github-app-setup.md) ✅
+Ready? Start with [GitHub App Setup](./Github-app-setup.md) ✅
