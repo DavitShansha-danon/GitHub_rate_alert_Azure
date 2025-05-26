@@ -37,10 +37,10 @@ To follow this setup, you will need:
 
 Follow these steps in order:
 
-1. **[Create GitHub App](./github-app-setup.md)**
+1. **[Create GitHub App](./Github-app-setup.md)**
    Set up an App with minimal permissions and download the `.pem` file
 
-2. **[Configure Azure Key Vault](./key-vault-setup.md)**
+2. **[Configure Azure Key Vault](./Key-vault-setup.md)**
    Store your `.pem` file securely and allow access to Logic App
 
 3. **[Deploy Azure Function](./azure-function.md)**
@@ -49,7 +49,7 @@ Follow these steps in order:
 4. **[Create Logic App](./logic-app.md)**
    Orchestrates the process and sends alerts via email
 
-5. **(Optional) [Troubleshooting Tips](./troubleshooting.md)**
+5. **[Troubleshooting Tips](./troubleshooting.md)**
    Debug common issues, check deployment results, test integrations
 
 ---
