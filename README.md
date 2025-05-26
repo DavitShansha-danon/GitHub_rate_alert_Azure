@@ -67,6 +67,8 @@ Follow these steps in order:
 * [GitHub Rate Limit Docs](https://docs.github.com/en/rest/rate-limit)
 * [Azure Logic Apps Overview](https://learn.microsoft.com/en-us/azure/logic-apps/)
 * [Azure Function App Docs](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview)
+* [Azure Keyvault Secret Set](https://learn.microsoft.com/en-us/cli/azure/keyvault/secret?view=azure-cli-latest#az-keyvault-secret-set)
+* [GitHub Apps Installation ID](https://stackoverflow.com/questions/74462420/where-can-we-find-github-apps-installation-id)
 
 ---
 
