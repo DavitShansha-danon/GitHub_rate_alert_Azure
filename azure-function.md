@@ -4,11 +4,48 @@ This function generates a JWT using your GitHub App's `.pem` and calls the GitHu
 
 ---
 
+## ☁️ Step 0: Create Azure Function App via CLI
+
+Before deploying, create your Azure Function App infrastructure using the Azure CLI:
+
+```bash
+# 1. Create a resource group (if needed)
+az group create --name <your-resource-group> --location <your-location>
+
+# 2. Create a storage account (required by Function App)
+az storage account create \
+  --name <your-storage-account> \
+  --location <your-location> \
+  --resource-group <your-resource-group> \
+  --sku Standard_LRS
+
+# 3. Create the Function App
+az functionapp create \
+  --name <your-function-app-name> \
+  --resource-group <your-resource-group> \
+  --consumption-plan-location <your-location> \
+  --runtime node \
+  --runtime-version 20 \
+  --functions-version 4 \
+  --storage-account <your-storage-account>
+````
+
+---
+
 ## 🔧 Step 1: Initialize Project
 
 ```bash
 mkdir github-jwt-func && cd github-jwt-func
 func init . --worker-runtime node --language javascript
+```
+
+---
+
+💡 **Note:** If a `src/` folder is generated during `func init`, you can safely delete it to keep your structure clean and avoid conflicts with your custom function folder layout (`GenerateGitHubJWT/`).
+This helps prevent confusion during local runs or deployment.
+
+```bash
+rm -rf src/
 ```
 
 ---
@@ -78,21 +115,61 @@ Edit `package.json` to remove the `main` line and keep only:
 
 ---
 
-## 🚀 Step 4: Deploy to Azure
-
-Make sure you've created your Azure Function App:
+## 📁 Approximate Final Folder Structure
 
 ```bash
-func azure functionapp publish <your_function_app_name>
+github-jwt-func/
+├── GenerateGitHubJWT/
+│   ├── index.js
+│   └── function.json
+├── node_modules/
+├── package.json
+├── host.json
+├── local.settings.json
+```
+
+---
+
+## 🧪 (Optional) Step 3.5: Local Test
+
+You can run the function locally before deploying:
+
+```bash
+func start
+```
+
+Then send a POST request to:
+
+```
+http://localhost:7071/api/GenerateGitHubJWT
+```
+
+Make sure your request body includes:
+
+```json
+{
+  "appId": "<your-app-id>",
+  "pem": "<your-pem-key>"
+}
+```
+
+---
+
+## 🚀 Step 4: Deploy to Azure
+
+Deploy your function to the Azure Function App:
+
+```bash
+func azure functionapp publish <your-function-app-name>
 ```
 
 You’ll get a URL like:
 
 ```
-https://<your_func>.azurewebsites.net/api/GenerateGitHubJWT
+https://<your-function-app-name>.azurewebsites.net/api/GenerateGitHubJWT
 ```
 
-Use this URL in the Logic App.
+Use this URL in your Logic App or test it with Postman.
 
 ---
 
@@ -101,14 +178,14 @@ Use this URL in the Logic App.
 If you run the command:
 
 ```bash
-func azure functionapp publish <your_function_app_name>
-````
+func azure functionapp publish <your-function-app-name>
+```
 
 …and you don’t see this expected output:
 
 ```
-Functions in func-gh-rate-limit-dev:
-    GenerateGitHubJWT - [POST] https://<your_func>.azurewebsites.net/api/GenerateGitHubJWT
+Functions in <your-function-app-name>:
+    GenerateGitHubJWT - [POST] https://<your-function-app-name>.azurewebsites.net/api/GenerateGitHubJWT
 ```
 
 👉 **Don’t worry.** This is normal if you haven’t yet connected your Function App to an input trigger.
@@ -127,6 +204,8 @@ Until you create a Logic App (or Postman test) that calls the function and provi
 1. Create a Logic App (see next steps)
 2. In that Logic App, define the `appId` and read the `.pem` from Key Vault
 3. Once the Logic App is working, you can re-run the Function App manually or let the Logic App trigger it automatically.
+
+---
 
 ## 🖇️ Next Step
 
